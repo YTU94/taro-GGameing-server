@@ -11,15 +11,26 @@ module.exports = {
             const openId = JSON.parse(body).openid
             const insertSql = 'INSERT INTO `uer_list` (openId, loginAt) VALUES (?,?)'
             const checkSql = 'SELECT COUNT(*) as COUNT FROM `uer_list` WHERE openId = ?'
-            pool.coonPool(checkSql, openId, (response) => {
+            const addOpenTimes = 'UPDATE uer_list SET openTimes=openTimes + 1 WHERE openId = ?'
+            if (!openId) {
+                res.json({
+                    code: 500,
+                    msg: 'ok',
+                    data: body
+                })
+                return
+            }
+            pool.coonPool(res, checkSql, openId, (response) => {
                 if (response[0].COUNT > 0) {
-                    res.json({
-                        code: 200,
-                        msg: 'ok',
-                        data: response
+                    pool.coonPool(res, addOpenTimes, [openId], (response) => {
+                        res.json({
+                            code: 200,
+                            msg: 'ok',
+                            data: response
+                        })
                     })
                 } else {
-                    pool.coonPool(insertSql, [openId, date], (response) => {
+                    pool.coonPool(res, insertSql, [openId, date], (response) => {
                         res.json({
                             code: 200,
                             msg: 'ok',

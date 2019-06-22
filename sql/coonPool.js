@@ -1,15 +1,22 @@
-const mysql = require('mysql') 
+const mysql = require('mysql')
 const db = require('../config/db')
 const pool = mysql.createPool(db)
 
 module.exports = {
-    coonPool(sql, val, cb) {
+    coonPool(res, sql, val, cb) {
         pool.getConnection((err, connection) => {
             if (err) throw err
             connection.query(sql, val, (error, response) => {
-                cb(response)
+                if (error) {
+                    res.json({
+                        code: 500,
+                        msg: 'error',
+                        data: error
+                    })
+                } else {
+                    cb(response)
+                }
                 connection.release();
-                if (error) console.log(error);
             })
         })
     }
