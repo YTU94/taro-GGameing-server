@@ -1,5 +1,5 @@
-const mysql = require('mysql')
-const db = require('../config/db')
+const mysql = require("mysql")
+const db = require("../config/db")
 const pool = mysql.createPool(db)
 
 module.exports = {
@@ -10,13 +10,13 @@ module.exports = {
                 if (error) {
                     res.json({
                         code: 500,
-                        msg: 'error',
+                        msg: "error",
                         data: error
                     })
                 } else {
                     cb(response)
                 }
-                connection.release();
+                connection.release()
             })
         })
     }
