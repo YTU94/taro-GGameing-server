@@ -23,7 +23,7 @@ module.exports = {
     keepList(req, res) {
         const token = req.header("x-token")
         const status = req.query.status || 0
-        const sql = "SELECT * from `keep_list` WHERE openId = ? AND status = ?"
+        const sql = "SELECT id,createAt,content,status from `keep_list` WHERE openId = ? AND status = ?"
 
         common.tokenToOpenID(res, token).then(result => {
             let openId = result[0] && result[0].openId
@@ -33,6 +33,18 @@ module.exports = {
                     msg: "ok",
                     data: response
                 })
+            })
+        })
+    },
+    updateStatus(req, res) {
+        const id = req.body.id
+        const status = req.body.status
+        const sql = "UPDATE `keep_list` SET status = ? WHERE id = ?"
+        pool.coonPool(res, sql, [status, id], response => {
+            res.json({
+                code: 200,
+                msg: "ok",
+                data: response
             })
         })
     }
