@@ -9,6 +9,6 @@ router.get("/a", (req, res) => res.send("Hello World! aaa"))
 router.post("/api/v1/addUser", user.addUser)
 router.post("/api/v1/addKeepItem", keepList.addKeepItem)
 router.get("/api/v1/keepList", keepList.keepList)
-router.get("/api/v1/updateStatus", keepList.updateStatus)
+router.post("/api/v1/updateStatus", keepList.updateStatus)
 
 module.exports = router
