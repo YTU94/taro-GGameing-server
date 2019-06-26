@@ -12,7 +12,7 @@ module.exports = {
                 const openId = JSON.parse(body).openid
                 const insertSql = "INSERT INTO `uer_list` (openId, loginAt, token) VALUES (?,?,?)"
                 const checkSql = "SELECT COUNT(*) as COUNT FROM `uer_list` WHERE openId = ?"
-                const addOpenTimes = "UPDATE uer_list SET openTimes=openTimes || 0 + 1 WHERE openId = ?"
+                const addOpenTimes = "UPDATE uer_list SET openTimes=openTimes + 1, token = ? WHERE openId = ?"
                 let _s = jwt.sign({openId: openId}, "261011")
 
                 if (!openId) {
@@ -25,7 +25,7 @@ module.exports = {
                 }
                 pool.coonPool(res, checkSql, openId, response => {
                     if (response[0].COUNT > 0) {
-                        pool.coonPool(res, addOpenTimes, [openId], response => {
+                        pool.coonPool(res, addOpenTimes, [openId, _s], response => {
                             res.json({
                                 code: 200,
                                 msg: "ok",
