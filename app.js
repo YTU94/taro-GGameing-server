@@ -11,10 +11,12 @@ var http = require("http")
 
 var app = express()
 const sideThread = require("./sideThread")
+
 // sideThread.parseJSAsync().then(res => {
 //     console.log("object", res)
 // })
-console.log(sideThread, typeof sideThread)
+// sideThread()
+// console.log(sideThread, typeof sideThread)
 
 const assert = require("assert")
 app.get("/", (req, res) => res.send("Hello World!"))
