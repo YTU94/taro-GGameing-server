@@ -21,5 +21,15 @@ module.exports = {
                 resolve(response)
             })
         })
+    },
+    getAccessToken() {
+        return new Promise((resolve, reject) => {
+            request.get(
+                `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxfb1a8fd1a3a773c8&secret=fa532b4d1817c0050b9bbe48195a3257`,
+                (error, response, body) => {
+                    console.log(body)
+                }
+            )
+        })
     }
 }
