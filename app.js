@@ -10,7 +10,7 @@ var debug = require("debug")("myapp:server")
 var http = require("http")
 
 var app = express()
-const sideThread = require("./sideThread")
+// const sideThread = require("./sideThread")
 
 // sideThread.parseJSAsync().then(res => {
 //     console.log("object", res)
