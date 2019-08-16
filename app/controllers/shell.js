@@ -10,6 +10,10 @@ module.exports = {
                     code: 200,
                     msg: "ok",
                     success: true,
+                    data: {
+                        stdout: stdout,
+                        stderr: stderr
+                    },
                     err: ""
                 })
             })
