@@ -3,7 +3,7 @@ const common = require("./common")
 
 module.exports = {
     appleidList(req, res) {
-        const sql = "SELECT * from `appleid_list` order by id desc"
+        const sql = "SELECT * from `appleid_list`"
         pool.coonPool(res, sql, response => {
             res.json({
                 code: 200,
