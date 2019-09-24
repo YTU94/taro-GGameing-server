@@ -10,6 +10,8 @@ var debug = require("debug")("myapp:server")
 var http = require("http")
 
 var app = express()
+const fs = require("fs")
+const Busboy = require("busboy")
 // const sideThread = require("./sideThread")
 
 // sideThread.parseJSAsync().then(res => {
@@ -20,6 +22,10 @@ var app = express()
 
 const assert = require("assert")
 app.get("/", (req, res) => res.send("Hello World!"))
+//使用express框架自带的static中间件，用来管理静态资源
+app.use("/", express.static(__dirname + "/"))
+//上传文件必须是post方式并且需要指定上传的路径
+
 app.all("*", function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*")
     //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行

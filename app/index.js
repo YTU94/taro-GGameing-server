@@ -5,6 +5,7 @@ const keepList = require("./controllers/keepList")
 const messages = require("./controllers/messages")
 const shell = require("./controllers/shell")
 const appleid = require("./controllers/appleidList")
+const file = require("./controllers/uploadFile")
 
 // user
 
@@ -18,5 +19,6 @@ router.get("/api/v1/messageList", messages.messageList)
 router.post("/api/v1/sendMessage", messages.sendMessage)
 router.post("/api/doshell", shell.doshell)
 router.get("/api/appleidList", appleid.appleidList)
+router.post("/api/v1/uploadImg", file.uploadImg)
 
 module.exports = router
