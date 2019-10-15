@@ -101,9 +101,11 @@ module.exports = {
         const messageId = req.body.messageId
         const insertSql = "INSERT INTO `users` (email, nickName, createAt, password) VALUES (?,?,?,?)"
         const checkSql = "SElECT COUNT(*) as COUNT FROM `users` WHERE email = ?"
-        const checkCode = "SELECT * FROM `regists` WHERE email = ?"
-        pool.coonPool(res.checkCode, email, response => {
-            if (response.messageId == messageId) {
+        const checkCode = "SELECT * FROM `regists` WHERE email = ? AND code = ?"
+        console.log(email, code, messageId, "----")
+        pool.coonPool(res, checkCode, [email, code], response => {
+            console.log("object", response)
+            if (response[0] && response[0].messageId == messageId) {
                 pool.coonPool(res, checkSql, email, response => {
                     if (response[0].COUNT > 0) {
                         console.log("addOpenTimes")
@@ -127,6 +129,27 @@ module.exports = {
                 res.json({
                     code: 401,
                     msg: "验证码不正确",
+                    data: response
+                })
+            }
+        })
+    },
+    login(req, res) {
+        const email = req.body.account
+        const password = req.body.password
+        const sql = "SELECT password FROM `users` WHERE email = ?"
+        pool.coonPool(res, sql, email, response => {
+            console.log(response)
+            if (response[0].password == password) {
+                res.json({
+                    code: 200,
+                    msg: "ok",
+                    data: response
+                })
+            } else {
+                res.json({
+                    code: 2,
+                    msg: "密码不正确",
                     data: response
                 })
             }
