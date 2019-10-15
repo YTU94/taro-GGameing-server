@@ -1,6 +1,7 @@
 const pool = require("../../sql/coonPool")
 var request = require("request")
 var jwt = require("jsonwebtoken")
+const mail = require("../utils/mail")
 
 module.exports = {
     addUser(req, res) {
@@ -13,7 +14,7 @@ module.exports = {
                 const insertSql = "INSERT INTO `uer_list` (openId, loginAt, token) VALUES (?,?,?)"
                 const checkSql = "SELECT COUNT(*) as COUNT FROM `uer_list` WHERE openId = ?"
                 const addOpenTimes = "UPDATE uer_list SET openTimes=openTimes + 1, token = ? WHERE openId = ?"
-                let _s = jwt.sign({openId: openId}, "261011")
+                let _s = jwt.sign({ openId: openId }, "261011")
 
                 if (!openId) {
                     res.json({
@@ -48,5 +49,87 @@ module.exports = {
                 })
             }
         )
+    },
+    getMailCode(req, res) {
+        const email = req.query.email
+        const code = Math.floor(Math.random() * 11000 - 1001)
+        mail.main(email, code).then(info => {
+            console.log("ssssssssssss", info)
+            let times = 0
+            let messageId = info.messageId
+            const insertSql = "INSERT INTO `regists` (email, messageId, code, times) VALUES (?,?,?,?)"
+            const checkSql = "SElECT COUNT(*) as COUNT FROM `regists` WHERE email = ?"
+            const addSendTimes = "UPDATE regists SET times=times + 1, code = ? WHERE email = ?"
+            pool.coonPool(res, checkSql, email, response => {
+                if (response[0].COUNT > 0) {
+                    console.log("addOpenTimes")
+                    pool.coonPool(res, addSendTimes, [code, email], response => {
+                        res.json({
+                            code: 200,
+                            msg: "ok",
+                            data: {
+                                email: email,
+                                messageId: messageId,
+                                code: code
+                            }
+                        })
+                    })
+                } else {
+                    pool.coonPool(res, insertSql, [email, messageId, code, times], response => {
+                        console.log("insert")
+                        res.json({
+                            code: 200,
+                            msg: "ok",
+                            data: {
+                                email: email,
+                                messageId: messageId,
+                                code: code
+                            }
+                        })
+                    })
+                }
+            })
+        })
+    },
+
+    regist(req, res) {
+        const date = new Date()
+        const nickName = req.body.nickName
+        const email = req.body.email
+        const code = req.body.code
+        const password = req.body.password
+        const messageId = req.body.messageId
+        const insertSql = "INSERT INTO `users` (email, nickName, createAt, password) VALUES (?,?,?,?)"
+        const checkSql = "SElECT COUNT(*) as COUNT FROM `users` WHERE email = ?"
+        const checkCode = "SELECT * FROM `regists` WHERE email = ?"
+        pool.coonPool(res.checkCode, email, response => {
+            if (response.messageId == messageId) {
+                pool.coonPool(res, checkSql, email, response => {
+                    if (response[0].COUNT > 0) {
+                        console.log("addOpenTimes")
+                        res.json({
+                            code: 200,
+                            msg: "邮箱已注册",
+                            data: response
+                        })
+                    } else {
+                        pool.coonPool(res, insertSql, [email, nickName, date, password], response => {
+                            console.log("insert")
+                            res.json({
+                                code: 200,
+                                msg: "ok",
+                                data: response
+                            })
+                        })
+                    }
+                })
+            } else {
+                res.json({
+                    code: 401,
+                    msg: "验证码不正确",
+                    data: response
+                })
+            }
+        })
     }
 }

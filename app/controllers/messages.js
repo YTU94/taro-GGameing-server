@@ -8,7 +8,8 @@ module.exports = {
         const offsetStart = (page_num - 1) * page_size
         const offseEnd = page_num * page_size
         const sql = "SELECT id,nickName,createAt,message,address from `messages` order by id desc LIMIT ?,?"
-        console.log("ssssssssssss")
+        
+
         pool.coonPool(res, sql, [offsetStart, offseEnd], response => {
             res.json({
                 code: 200,

@@ -12,6 +12,10 @@ const file = require("./controllers/uploadFile")
 /* GET home page. */
 router.get("/a", (req, res) => res.send("Hello World! aaa"))
 router.post("/api/v1/addUser", user.addUser)
+
+router.get("/api/v1/getMailCode", user.getMailCode)
+router.post("/api/v1/regist", user.regist)
+
 router.post("/api/v1/addKeepItem", keepList.addKeepItem)
 router.get("/api/v1/keepList", keepList.keepList)
 router.post("/api/v1/updateStatus", keepList.updateStatus)
