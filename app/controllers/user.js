@@ -134,8 +134,8 @@ module.exports = {
     },
     login(req, res) {
         const email = req.body.account
-        const password = req.body.password
-        const sql = "SELECT password FROM `users` WHERE email = ?"
+        const password = req.body.pass
+        const sql = "SELECT email, nickname FROM `users` WHERE email = ?"
         pool.coonPool(res, sql, email, response => {
             if (response[0].password == password) {
                 res.json({
