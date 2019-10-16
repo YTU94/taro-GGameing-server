@@ -7,7 +7,7 @@ module.exports = {
         if (password == "261011") {
             exec(shell, (err, stdout, stderr) => {
                 res.json({
-                    code: 200,
+                    code: 0,
                     msg: "ok",
                     success: true,
                     data: {
@@ -19,7 +19,7 @@ module.exports = {
             })
         } else {
             res.json({
-                code: 200,
+                code: 1,
                 msg: "执行失败，密码不正确",
                 success: false,
                 err: true
