@@ -15,7 +15,7 @@ module.exports = {
                 pool.coonPool(res, insertSql, [v], response => {
                     pool.coonPool(res, sql, "", response => {
                         res.json({
-                            code: 200,
+                            code: 0,
                             msg: "ok",
                             data: response
                         })

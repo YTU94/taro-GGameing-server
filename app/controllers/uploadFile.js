@@ -31,7 +31,7 @@ module.exports = {
         //监听finish完成事件,完成后重定向到百度首页
         busboy.on("finish", function() {
             res.json({
-                code: 200,
+                code: 0,
                 msg: "success",
                 data: {
                     url: a

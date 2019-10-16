@@ -54,7 +54,6 @@ module.exports = {
         const email = req.query.email
         const code = Math.floor(Math.random() * 11000 - 1001)
         mail.main(email, code).then(info => {
-            console.log("ssssssssssss", info)
             let times = 0
             let messageId = info.messageId
             const insertSql = "INSERT INTO `regists` (email, messageId, code, times) VALUES (?,?,?,?)"
@@ -62,10 +61,9 @@ module.exports = {
             const addSendTimes = "UPDATE regists SET times=times + 1, code = ? WHERE email = ?"
             pool.coonPool(res, checkSql, email, response => {
                 if (response[0].COUNT > 0) {
-                    console.log("addOpenTimes")
                     pool.coonPool(res, addSendTimes, [code, email], response => {
                         res.json({
-                            code: 200,
+                            code: 0,
                             msg: "ok",
                             data: {
                                 email: email,
@@ -78,7 +76,7 @@ module.exports = {
                     pool.coonPool(res, insertSql, [email, messageId, code, times], response => {
                         console.log("insert")
                         res.json({
-                            code: 200,
+                            code: 0,
                             msg: "ok",
                             data: {
                                 email: email,
@@ -110,7 +108,7 @@ module.exports = {
                     if (response[0].COUNT > 0) {
                         console.log("addOpenTimes")
                         res.json({
-                            code: 200,
+                            code: 1,
                             msg: "邮箱已注册",
                             data: response
                         })
@@ -118,7 +116,7 @@ module.exports = {
                         pool.coonPool(res, insertSql, [email, nickName, date, password], response => {
                             console.log("insert")
                             res.json({
-                                code: 200,
+                                code: 0,
                                 msg: "ok",
                                 data: response
                             })
@@ -127,7 +125,7 @@ module.exports = {
                 })
             } else {
                 res.json({
-                    code: 401,
+                    code: 1,
                     msg: "验证码不正确",
                     data: response
                 })
@@ -139,16 +137,15 @@ module.exports = {
         const password = req.body.password
         const sql = "SELECT password FROM `users` WHERE email = ?"
         pool.coonPool(res, sql, email, response => {
-            console.log(response)
             if (response[0].password == password) {
                 res.json({
-                    code: 200,
+                    code: 0,
                     msg: "ok",
                     data: response
                 })
             } else {
                 res.json({
-                    code: 2,
+                    code: 1,
                     msg: "密码不正确",
                     data: response
                 })

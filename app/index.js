@@ -15,6 +15,7 @@ router.post("/api/v1/addUser", user.addUser)
 
 router.get("/api/v1/getMailCode", user.getMailCode)
 router.post("/api/v1/regist", user.regist)
+router.post("/api/v1/login", user.login)
 
 router.post("/api/v1/addKeepItem", keepList.addKeepItem)
 router.get("/api/v1/keepList", keepList.keepList)
