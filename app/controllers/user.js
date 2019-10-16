@@ -74,7 +74,6 @@ module.exports = {
                     })
                 } else {
                     pool.coonPool(res, insertSql, [email, messageId, code, times], response => {
-                        console.log("insert")
                         res.json({
                             code: 0,
                             msg: "ok",
@@ -100,13 +99,10 @@ module.exports = {
         const insertSql = "INSERT INTO `users` (email, nickName, createAt, password) VALUES (?,?,?,?)"
         const checkSql = "SElECT COUNT(*) as COUNT FROM `users` WHERE email = ?"
         const checkCode = "SELECT * FROM `regists` WHERE email = ? AND code = ?"
-        console.log(email, code, messageId, "----")
         pool.coonPool(res, checkCode, [email, code], response => {
-            console.log("object", response)
             if (response[0] && response[0].messageId == messageId) {
                 pool.coonPool(res, checkSql, email, response => {
                     if (response[0].COUNT > 0) {
-                        console.log("addOpenTimes")
                         res.json({
                             code: 1,
                             msg: "邮箱已注册",
@@ -114,7 +110,6 @@ module.exports = {
                         })
                     } else {
                         pool.coonPool(res, insertSql, [email, nickName, date, password], response => {
-                            console.log("insert")
                             res.json({
                                 code: 0,
                                 msg: "ok",
@@ -134,20 +129,28 @@ module.exports = {
     },
     login(req, res) {
         const email = req.body.account || ""
-        const password = req.body.pass
+        const password = req.body.pass || ""
         const sql = "SELECT email, nickname, password FROM `users` WHERE email=? "
         pool.coonPool(res, sql, email, response => {
-            if (response[0].password == password) {
-                delete response[0].password
-                res.json({
-                    code: 0,
-                    msg: "ok",
-                    data: response[0]
-                })
+            if (Array.isArray(response) && response.length > 0) {
+                if (response[0].password == password) {
+                    delete response[0].password
+                    res.json({
+                        code: 0,
+                        msg: "ok",
+                        data: response[0]
+                    })
+                } else {
+                    res.json({
+                        code: 1,
+                        msg: "密码不正确",
+                        data: response
+                    })
+                }
             } else {
                 res.json({
-                    code: 1,
-                    msg: "密码不正确",
+                    code: 2,
+                    msg: "账户不存在",
                     data: response
                 })
             }
