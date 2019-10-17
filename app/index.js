@@ -24,6 +24,8 @@ router.get("/api/v1/messageList", messages.messageList)
 router.post("/api/v1/sendMessage", messages.sendMessage)
 router.post("/api/doshell", shell.doshell)
 router.get("/api/appleidList", appleid.appleidList)
+router.get("/api/otherIdList", appleid.otherIdList)
+
 router.post("/api/v1/uploadImg", file.uploadImg)
 
 module.exports = router
