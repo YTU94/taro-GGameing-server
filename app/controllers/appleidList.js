@@ -20,7 +20,7 @@ module.exports = {
             })
             const clearSql = "DELETE from `appleid_list` WHERE type = 0"
             const insertSql = "INSERT INTO `appleid_list` (name, account, password, remark, type) VALUES ? "
-            const sql = "SELECT * from `appleid_list`"
+            const sql = "SELECT * from `appleid_list` WHERE type = 0"
             pool.coonPool(res, clearSql, "", response => {
                 pool.coonPool(res, insertSql, [v], response => {
                     pool.coonPool(res, sql, "", response => {
@@ -50,7 +50,7 @@ module.exports = {
 
             const clearSql = "DELETE from `appleid_list` WHERE type != 2"
             const insertSql = "INSERT INTO `appleid_list` (name, account, password, remark, type) VALUES ? "
-            const sql = "SELECT * from `appleid_list`"
+            const sql = "SELECT * from `appleid_list` WHERE id > 0"
             pool.coonPool(res, clearSql, "", response => {
                 pool.coonPool(res, insertSql, [v], response => {
                     pool.coonPool(res, sql, "", response => {
