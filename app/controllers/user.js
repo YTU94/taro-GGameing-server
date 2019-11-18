@@ -144,7 +144,7 @@ module.exports = {
                     res.json({
                         code: 1,
                         msg: "密码不正确",
-                        data: response
+                        data: {}
                     })
                 }
             } else {
