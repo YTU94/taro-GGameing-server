@@ -86,16 +86,16 @@ const clsMiddleware = (req, res, next) => {
 
 //
 // app.use(clsProxifyExpressMiddleware("clsKeyLogger", createClsProxy))
-app.use(clsMiddleware)
-app.get("/test", (req, res) => {
-    console.log("object", loggerCls)
-    loggerCls.info("My message!")
-    res.json({})
-    // Logs `${headerRequestID}: My message!` into the console
-    // Say, we send GET /test with header 'Traceparent' set to 12345
-    // It's going to log '12345: My message!'s
-    // If it doesn't find anything in CLS by key 'clsKeyLogger' it uses the original `logger` and logs 'My message!'
-})
+// app.use(clsMiddleware)
+// app.get("/test", (req, res) => {
+//     console.log("object", loggerCls)
+//     loggerCls.info("My message!")
+//     res.json({})
+//     // Logs `${headerRequestID}: My message!` into the console
+//     // Say, we send GET /test with header 'Traceparent' set to 12345
+//     // It's going to log '12345: My message!'s
+//     // If it doesn't find anything in CLS by key 'clsKeyLogger' it uses the original `logger` and logs 'My message!'
+// })
 
 const fs = require("fs")
 const Busboy = require("busboy")
