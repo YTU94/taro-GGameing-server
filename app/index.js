@@ -6,6 +6,7 @@ const messages = require("./controllers/messages")
 const shell = require("./controllers/shell")
 const appleid = require("./controllers/appleidList")
 const file = require("./controllers/uploadFile")
+const btc = require("./controllers/btc")
 
 // user
 
@@ -28,5 +29,6 @@ router.get("/api/otherIdList", appleid.otherIdList)
 
 router.post("/api/v1/uploadImg", file.uploadImg)
 
+router.get("/api/v1/btcSaerch", btc.btcSearch)
 
 module.exports = router
