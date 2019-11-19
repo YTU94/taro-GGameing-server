@@ -29,6 +29,6 @@ router.get("/api/otherIdList", appleid.otherIdList)
 
 router.post("/api/v1/uploadImg", file.uploadImg)
 
-router.get("/api/v1/btcSaerch", btc.btcSearch)
+router.get("/api/v1/btcSearch", btc.btcSearch)
 
 module.exports = router
