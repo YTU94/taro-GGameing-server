@@ -42,9 +42,8 @@ module.exports = {
         })
     },
     getFilePath(req, res) {
-
         const path = req.query.path || ''
-        const root '/www/wwwroot/assets.ytuj.cn/'
+        const root = '/www/wwwroot/assets.ytuj.cn/'
         const targetPath = root + path
         // path = req.query.path
         let files = fs.readdirSync(targetPath)
