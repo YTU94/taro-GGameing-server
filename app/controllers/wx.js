@@ -1,13 +1,12 @@
-const pool = require("../../sql/coonPool")
-const request = require("request")
+const pool = require('../../sql/coonPool')
+const request = require('request')
 
-const CONFGI = {
+const CONFIG = {
     aw: {
         appid: 'wx451421ebed2dfdbf',
         appsecret: '69cac4ecc4b30df4e1d96a0174cf50c0'
     }
 }
-
 
 module.exports = {
     getWxAccessToken(req, res) {
@@ -19,10 +18,9 @@ module.exports = {
 
             res.json({
                 code: 0,
-                msg: "ok",
-                data: result.data
+                msg: 'ok',
+                data: result
             })
         })
     }
-
 }
