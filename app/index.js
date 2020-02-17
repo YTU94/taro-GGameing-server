@@ -7,7 +7,7 @@ const shell = require('./controllers/shell')
 const appleid = require('./controllers/appleidList')
 const file = require('./controllers/uploadFile')
 const btc = require('./controllers/btc')
-
+const wx = require('./controllers/wx')
 // user
 
 /* GET home page. */
@@ -33,5 +33,7 @@ router.get('/api/v1/getFilePath', file.getFilePath)
 router.get('/api/v1/btcSearch', btc.btcSearch)
 router.get('/api/v1/collectList', btc.collectList)
 router.post('/api/v1/collectBtc', btc.collectBtc)
+
+router.get('/api/v1/getWxAccessToken', wx.getWxAccessToken)
 
 module.exports = router
