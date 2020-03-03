@@ -35,5 +35,6 @@ router.get('/api/v1/collectList', btc.collectList)
 router.post('/api/v1/collectBtc', btc.collectBtc)
 
 router.get('/api/v1/getWxAccessToken', wx.getWxAccessToken)
+router.get('/api/v1/screenShot', wx.screenShot)
 
 module.exports = router
