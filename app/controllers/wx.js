@@ -32,9 +32,9 @@ module.exports = {
         })
         const page = await browser.newPage()
         await page.goto(url)
-        await page.setViewport({
-            width: 1200
-        })
+        // await page.setViewport({
+        //     width: 1200
+        // })
 
         await autoScroll(page)
         let a = new Date().getTime()
