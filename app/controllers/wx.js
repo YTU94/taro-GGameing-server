@@ -25,25 +25,31 @@ module.exports = {
         })
     },
     async screenShot(req, res) {
-        const url = req.query.key
+        const url = req.query.url
+        console.log(url)
         const browser = await puppeteer.launch({
             headless: true
         })
         const page = await browser.newPage()
-        await page.goto('http://robben.souche-inc.com/#/project/%E9%87%91%E8%9E%8D%E5%89%8D%E7%AB%AF/work-order/manual')
+        await page.goto(url)
         await page.setViewport({
-            width: 1200,
-            height: 800
+            width: 1200
         })
 
         await autoScroll(page)
-
+        let a = new Date().getTime()
         await page.screenshot({
-            path: '/Users/yuanjiankang/Downloads/1.png',
+            path: `/www/wwwroot/assets.ytuj.cn/img/${a}.png`,
             fullPage: true
         })
 
         await browser.close()
+
+        res.json({
+            code: 0,
+            msg: 'ok',
+            data: `http://assets.ytuj.cn/img/${a}.png`
+        })
     }
 }
 
