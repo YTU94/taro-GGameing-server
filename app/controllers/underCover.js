@@ -21,18 +21,19 @@ module.exports = {
         })
     },
     joinRoom(req, res) {
-        const id = req.body.roomId
+        const roomNumbers = req.body.roomNumbers
         const token = req.header("x-token")
 
         common.tokenToOpenID(res, token).then((result) => {
             const openId = (result[0] && result[0].openId) || ""
 
-            const checkSql = "SELECT userids FROM `undercover_room` WHERE id=?"
+            const checkSql = "SELECT * FROM `undercover_room` WHERE roomNumbers=?"
             const updateSql = "UPDATE `undercover_room` SET userIds=? WHERE id=?"
-            pool.coonPool(res, checkSql, id, (response) => {
-                let curUserId = response[0] && response[0].userids
-                console.log("check result", response[0].userids)
-                // response.userids && response.userids.split(",")
+            pool.coonPool(res, checkSql, roomNumbers, (response) => {
+                let curUserId = response[0] && response[0].userIds
+                let id = response[0] && response[0].id
+                console.log("check result", response[0], curUserId, id)
+                response.userids && response.userids.split(",")
                 if (curUserId) {
                     const userIdList = curUserId.split(",")
                     if (userIdList.includes(openId)) {
@@ -80,8 +81,7 @@ module.exports = {
             const checkSql = "SELECT userids FROM `undercover_room` WHERE id=?"
             const updateSql = "UPDATE `undercover_room` SET userIds=? WHERE id=?"
             pool.coonPool(res, checkSql, id, (response) => {
-                let curUserId = response[0] && response[0].userids
-                console.log("check result", response[0].userids)
+                let curUserId = response[0] && response[0].userIds
                 // response.userids && response.userids.split(",")
                 if (curUserId) {
                     const userIdList = curUserId.split(",")
