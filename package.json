@@ -23,7 +23,8 @@
     "parse": "^2.4.0",
     "pino": "^5.13.6",
     "puppeteer": "^2.1.1",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "socket.io": "^2.3.0"
   },
   "peerDependencies": {
     "cls-hooked": "^4.2.2"

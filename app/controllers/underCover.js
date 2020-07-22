@@ -123,5 +123,6 @@ module.exports = {
                 data: response
             })
         })
-    }
+    },
+    
 }

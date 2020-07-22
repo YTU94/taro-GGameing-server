@@ -36,10 +36,10 @@ const logger = pino()
 
 const app = express()
 
-const createClsProxy = req => {
+const createClsProxy = (req) => {
     const headerRequestID = req.headers.traceparent
     const loggerProxy = {
-        info: msg => `${headerRequestID}: ${msg}`
+        info: (msg) => `${headerRequestID}: ${msg}`
     }
     // this value will be accesible in CLS by key 'clsKeyLogger'
     // it will be used as a proxy for `loggerCls`
@@ -107,14 +107,14 @@ const Busboy = require("busboy")
 // console.log(sideThread, typeof sideThread)
 
 const assert = require("assert")
-app.get("/", (req, res) => res.send("Hello World!"))
+
 //使用express框架自带的static中间件，用来管理静态资源
 app.use("/", express.static(__dirname + "/"))
 //上传文件必须是post方式并且需要指定上传的路径
 const allowHeaders =
     "Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With, Authorization"
 
-app.all("*", function(req, res, next) {
+app.all("*", function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*")
     //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
     res.header("Access-Control-Allow-Headers", allowHeaders)
@@ -140,12 +140,16 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use(indexRouter)
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     next(createError(404))
 })
 
+app.use(function (req, res, next) {
+    res.io = io
+    next()
+})
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message
     res.locals.error = req.app.get("env") === "development" ? err : {}
@@ -168,7 +172,7 @@ app.use(function(err, req, res, next) {
  */
 
 var port = normalizePort(process.env.PORT || "3001")
-app.set("port", port)
+app.set("port sdf", port)
 
 /**
  * Create HTTP server.
@@ -181,8 +185,18 @@ var server = http.createServer(app)
  */
 
 console.log("Express app started on port " + port)
+let io = require("socket.io")(server, {
+    path: "/test",
+    serveClient: false,
+    // below are engine.IO options
+    pingInterval: 10000,
+    pingTimeout: 5000,
+    cookie: false
+})
 
-server.listen(port, "0.0.0.0")
+console.log("port", port)
+
+server.listen(port)
 server.on("error", onError)
 server.on("listening", onListening)
 
@@ -243,3 +257,24 @@ function onListening() {
 }
 
 // sideThread()
+
+app.get("/", (req, res) => {
+    console.log("kaishi socket jintiang", res.io)
+    res.io.on("connection", function (socket) {
+        // socket相关监听都要放在这个回调里
+        console.log("a user connected")
+
+        // socket.on("disconnect", function () {
+        //     console.log("a user go out")
+        // })
+
+        // socket.on("msg", function (obj) {
+        //     //延迟3s返回信息给客户端
+        //     setTimeout(function () {
+        //         console.log("the websokcet message is" + obj)
+        //         io.emit("msg", obj)
+        //     }, 3000)
+        // })
+    })
+    res.send("Hello World!")
+})

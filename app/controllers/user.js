@@ -26,7 +26,6 @@ module.exports = {
                 }
                 pool.coonPool(res, checkSql, openId, response => {
                     if (response[0].COUNT > 0) {
-                        console.log("addOpenTimes")
                         pool.coonPool(res, addOpenTimes, [_s, openId], response => {
                             res.json({
                                 code: 200,
