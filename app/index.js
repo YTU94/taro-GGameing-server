@@ -13,7 +13,10 @@ const underCover = require("./controllers/underCover")
 // user
 
 /* GET home page. */
-router.get("/a", (req, res) => res.send("Hello World! aaa"))
+router.post("/a", (req, res) => res.json({
+    code: 1,
+    data: {}
+}))
 router.post("/api/v1/addUser", user.addUser)
 
 router.get("/api/v1/getMailCode", user.getMailCode)

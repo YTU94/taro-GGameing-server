@@ -89,7 +89,11 @@ const clsMiddleware = (req, res, next) => {
 app.use(clsMiddleware)
 app.get("/test", (req, res) => {
     loggerCls.info("My message!")
-    res.json({})
+    res.json({
+        code: 1,
+        data: {
+        }
+    })
     // Logs `${headerRequestID}: My message!` into the console
     // Say, we send GET /test with header 'Traceparent' set to 12345
     // It's going to log '12345: My message!'s
@@ -120,7 +124,14 @@ app.all("*", function (req, res, next) {
     res.header("Access-Control-Allow-Headers", allowHeaders)
     res.header("Access-Control-Allow-Methods", "*")
     res.header("Content-Type", "application/json;charset=utf-8")
-    next()
+    // 设置服务器支持的所有跨域请求的方法
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    if (req.method.toLowerCase() == 'options') {
+        console.log('get options');
+        res.send(200);  // 让options尝试请求快速结束
+    } else {
+        next();
+    }
 })
 
 // view engine setup
