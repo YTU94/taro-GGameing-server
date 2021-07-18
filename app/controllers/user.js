@@ -51,7 +51,8 @@ module.exports = {
     },
     getMailCode(req, res) {
         const email = req.query.email
-        const code = Math.floor(Math.random() * 11000 - 1001)
+        const code = Math.floor(Math.random() * 11000 - 1001);
+        console.log('-----', email, code);
         mail.main(email, code).then(info => {
             let times = 0
             let messageId = info.messageId
@@ -60,6 +61,7 @@ module.exports = {
             const addSendTimes = "UPDATE regists SET times=times + 1, code = ? WHERE email = ?"
             pool.coonPool(res, checkSql, email, response => {
                 if (response[0].COUNT > 0) {
+                    console.log('has regist');
                     pool.coonPool(res, addSendTimes, [code, email], response => {
                         res.json({
                             code: 0,
@@ -72,6 +74,7 @@ module.exports = {
                         })
                     })
                 } else {
+                    console.log('go regist');
                     pool.coonPool(res, insertSql, [email, messageId, code, times], response => {
                         res.json({
                             code: 0,
